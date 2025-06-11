@@ -6,6 +6,8 @@ import pygame
 # for pygame help go:  https://www.pygame.org/docs/ref/pygame.html
 from constants import *
 from player import Player
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
 
 def main():
 	
@@ -16,10 +18,15 @@ def main():
 
 	updatable = pygame.sprite.Group()
 	drawable = pygame.sprite.Group()
+	asteroids = pygame.sprite.Group()
 
 	Player.containers = (updatable, drawable)
+	Asteroid.containers = (asteroids, updatable, drawable)
+	AsteroidField.containers = (updatable)
 
 	player = Player(SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2)
+	field = AsteroidField()
+
 	
 	looping = True
 	while looping == True:
@@ -30,7 +37,8 @@ def main():
 	
 		screen.fill("black")
 		updatable.update(dt)
-		player.draw(screen)
+		for object in drawable:
+			object.draw(screen)
 		pygame.display.flip()
 	
 		dt = clock.tick(60)/1000
